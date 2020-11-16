@@ -9,6 +9,26 @@
             <label class="block" for="">Question</label>
             <textarea class="w-full border border-gray-400 rounded-lg p-2" name="question" id="" cols="30" rows="4" placeholder="Question" required></textarea>
         </div>
+        <div class="my-2">
+            <div class="flex flex-wrap -mx-2">
+                <div class="w-1/3 px-2">
+                    <label class="w-full" for="">Level</label>
+                    <select name="question_level" id="" class="w-full my-2 px-2 py-2 border border-gray-500 rounded-lg">
+                        <option value="easy">easy</option>
+                        <option value="medium">medium</option>
+                        <option value="hard">hard</option>
+                    </select>
+                </div>
+                <div class="w-1/3 px-2">
+                    <label class="w-full" for="">Score (optional)</label>
+                    <input class="my-2 border border-gray-500 p-2 w-full rounded-lg" type="text" name="question_score" placeholder="Score" >
+                </div>
+                <div class="w-1/3 px-2">
+                    <label class="w-full" for="">Hint (optional)</label>
+                    <input class="my-2 border border-gray-500 p-2 w-full rounded-lg" type="text" name="question_hint" placeholder="hint" >
+                </div>
+            </div>
+        </div>
         <hr>
         <div class="flex flex-wrap my-4"  id="ans1">
             <div class="w-1/2">

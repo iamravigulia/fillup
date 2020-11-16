@@ -18,6 +18,9 @@ class FillupController extends Controller
         // dd($request->ans_correct1);
         $fillupQues = new FillupQues();
         $fillupQues->question = $request->question;
+        $fillupQues->level = $request->question_level;
+        $fillupQues->score = $request->question_score;
+        $fillupQues->hint = $request->question_hint;
         $fillupQues->save();
         /*  */
         if ($request->answer1) {
