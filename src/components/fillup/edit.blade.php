@@ -4,7 +4,7 @@
 -->
 <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 @php $que = DB::table('fmt_fillup_ques')->where('id', $message)->first(); @endphp
-<div class="fixed z-10 inset-0 overflow-y-auto hidden" id="modalCMA{{$que->id}}">
+<div class="fixed z-10 inset-0 overflow-y-auto hidden" id="modalFILL{{$que->id}}">
     
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <!--
@@ -34,7 +34,7 @@
           To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       -->
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full relative -mx-8" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-            <a onclick="closeModalCMA({{$message}})" class="p-2 bg-white w-8 h-8 bg-gray-600 text-white rounded-full absolute right-0 -top-10 -mr-2 -mt-2 z-40" href="javascript:void(0);">x</a>
+            <a onclick="closeModalFILL({{$message}})" class="p-2 bg-white w-8 h-8 bg-gray-600 text-white rounded-full absolute right-0 -top-10 -mr-2 -mt-2 z-40" href="javascript:void(0);">x</a>
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <form action="{{route('fmt.fillup.update', $que->id)}}" method="post" class="fmt_box" enctype="multipart/form-data">
                     @if ($errors ?? '')
@@ -55,6 +55,27 @@
                         </div>{{-- //w-1/3 --}}
                     </div>{{-- //flex-wrap --}}
                     <div class="my-2">
+                        <label class="bloc" for="">Difficulty Level</label>
+                        @php $d_levels = DB::table('difficulty_levels')->get(); @endphp
+                        <select name="difficulty_level_id" id="" class="w-full my-2 px-2 py-2 border border-gray-500 rounded-lg">
+                            @if ($que->difficulty_level_id)
+                                @php $mylevel = DB::table('difficulty_levels')->where('id', $que->difficulty_level_id)->first(); @endphp
+                                    <option value="{{$mylevel->id}}">{{$mylevel->name}}</option>
+                                @foreach ($d_levels as $level)
+                                    @if ($level->id == $mylevel->id)
+                    
+                                    @else
+                                        <option value="{{$level->id}}">{{$level->name}}</option>
+                                    @endif
+                                @endforeach
+                            @else
+                                @foreach ($d_levels as $level)
+                                    <option value="{{$level->id}}">{{$level->name}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    {{-- <div class="my-2">
                         <div class="flex flex-wrap -mx-2">
                             <div class="w-1/3 px-2">
                                 <label class="w-full" for="">Level</label>
@@ -74,7 +95,7 @@
                                 <input class="my-2 border border-gray-500 p-2 w-full rounded-lg" type="text" name="question_hint" placeholder="hint" value="{{$que->hint}}">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     @php $answers = DB::table('fmt_fillup_ans')->where('question_id', $que->id)->pluck('id'); @endphp
                     @foreach ($answers as $ans)
                         @php $answer = DB::table('fmt_fillup_ans')->where('id', $ans)->first(); @endphp

@@ -2,6 +2,7 @@
 namespace edgewizz\fillup\Controllers;
 
 use App\Http\Controllers\Controller;
+use Edgewizz\Edgecontent\Models\ProblemSetQues;
 use Edgewizz\Fillup\Models\FillupAns;
 use Edgewizz\Fillup\Models\FillupQues;
 use Illuminate\Http\Request;
@@ -18,10 +19,16 @@ class FillupController extends Controller
         // dd($request->ans_correct1);
         $fillupQues = new FillupQues();
         $fillupQues->question = $request->question;
-        $fillupQues->level = $request->question_level;
-        $fillupQues->score = $request->question_score;
+        $fillupQues->difficulty_level_id = $request->difficulty_level_id;
         $fillupQues->hint = $request->question_hint;
         $fillupQues->save();
+        if($request->problem_set_id && $request->format_type_id){
+            $pbq = new ProblemSetQues();
+            $pbq->problem_set_id = $request->problem_set_id;
+            $pbq->question_id = $fillupQues->id;
+            $pbq->format_type_id = $request->format_type_id;
+            $pbq->save();
+        }
         /*  */
         if ($request->answer1) {
             $fillupAns1 = new FillupAns();
@@ -93,8 +100,7 @@ class FillupController extends Controller
     public function edit($id, Request $request)
     {
     }
-    public function uploadFile(Request $request)
-    {
+    public function uploadFile(Request $request){
         
             $file = $request->file('file');
             // dd($file);
@@ -162,7 +168,14 @@ class FillupController extends Controller
                                 $fill_Q->question = $insertData['question'];
                                 if($insertData['level'] == '-'){
                                 }else{
-                                    $fill_Q->level = $insertData['level'];
+                                    // $fill_Q->level = $insertData['level'];
+                                    if($insertData['level'] == 'easy'){
+                                        $fill_Q->difficulty_level_id = 1;
+                                    }else if($insertData['level'] == 'medium'){
+                                        $fill_Q->difficulty_level_id = 2;
+                                    }else if($insertData['level'] == 'hard'){
+                                        $fill_Q->difficulty_level_id = 3;
+                                    }
                                 }
                                 if($insertData['score'] == '-'){
                                 }else{
@@ -173,6 +186,13 @@ class FillupController extends Controller
                                     $fill_Q->hint = $insertData['hint'];
                                 }
                                 $fill_Q->save();
+                                if($request->problem_set_id && $request->format_type_id){
+                                    $pbq = new ProblemSetQues();
+                                    $pbq->problem_set_id = $request->problem_set_id;
+                                    $pbq->question_id = $fill_Q->id;
+                                    $pbq->format_type_id = $request->format_type_id;
+                                    $pbq->save();
+                                }
                                 
                                 if($insertData['answer1'] == '-'){
                                 }else{
@@ -238,8 +258,7 @@ class FillupController extends Controller
     public function update($id, Request $request){
         $q = FillupQues::where('id', $id)->first();
         $q->question = $request->question;
-        $q->level = $request->question_level;
-        $q->score = $request->question_score;
+        $q->difficulty_level_id = $request->difficulty_level_id;
         $q->hint = $request->question_hint;
         $q->save();
         $answers = FillupAns::where('question_id', $q->id)->get();
@@ -269,7 +288,18 @@ class FillupController extends Controller
                 $f_ans->delete();
             }
         }
-        // dd($ans);
+        return back();
+    }
+    public function inactive($id){
+        $f = FillupQues::where('id', $id)->first();
+        $f->active = '0';
+        $f->save();
+        return back();
+    }
+    public function active($id){
+        $f = FillupQues::where('id', $id)->first();
+        $f->active = '1';
+        $f->save();
         return back();
     }
 }

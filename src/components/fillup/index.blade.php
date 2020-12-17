@@ -50,7 +50,7 @@
             <td>{{date('F d, Y',strtotime($que->created_at))}}</td>
             <td>{{date('F d, Y',strtotime($que->updated_at))}}</td>
             <td>
-                <a href="javascript:void(0);" onclick="modalCMA({{$que->id}})">Edit</a>
+                <a href="javascript:void(0);" onclick="modalFILL({{$que->id}})">Edit</a>
                 <a href="{{route('fmt.fillup.delete', $que->id)}}">Delete</a>
             </td>
         </tr>
@@ -59,12 +59,12 @@
     </tbody>
 </table>
 <script>
-    function modalCMA($id){
-        var modal = document.getElementById('modalCMA'+$id);
+    function modalFILL($id){
+        var modal = document.getElementById('modalFILL'+$id);
         modal.classList.remove("hidden");
     }
-    function closeModalCMA($id){
-        var modal = document.getElementById('modalCMA'+$id);
+    function closeModalFILL($id){
+        var modal = document.getElementById('modalFILL'+$id);
         modal.classList.add("hidden");
     }
 </script>

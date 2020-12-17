@@ -17,9 +17,9 @@ class CreateFillupAnsTable extends Migration
             $table->id();
             $table->foreignId('question_id');
             $table->longText('answer');
-            $table->boolean('active')->default(0);
+            $table->tinyInteger('active')->default(1);
             $table->foreignId('media_id')->nullable();
-            $table->string('arrange')->default(0);
+            $table->tinyInteger('arrange')->default(0);
             $table->timestamps();
         });
     }
