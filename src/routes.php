@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 //     return 'Hi, this is your awesome package!';
 // });
 
-Route::get('test', 'EdgeWizz\Fillup\Controllers\FillupController@test')->name('test');
+// Route::get('test', 'EdgeWizz\Fillup\Controllers\FillupController@test')->name('test');
 
 Route::post('fmt/fillup/store', 'EdgeWizz\Fillup\Controllers\FillupController@store')->name('fmt.fillup.store');
 
